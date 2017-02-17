@@ -18,3 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::group(['prefix' => 'api', 'middleware' => 'admin', 'namespace' => 'Api' ], function () {
+    Route::resource('menu', 'MenuController', ['only'=>['create','store','index','show','destroy']]);
+});
