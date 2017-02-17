@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Auth;
+use App\Models\Menu;
 
 class MenuController extends Controller {
-    public function  index(){
-        $username = Auth::user();
-        echo 2;
+
+    public function index() {
+        $data = Menu::paginate();
+        return response()->json($data);
     }
 }

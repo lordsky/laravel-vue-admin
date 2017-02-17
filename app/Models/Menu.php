@@ -8,4 +8,8 @@ class Menu extends Model
 
     protected $fillable = ['parent_id', 'sequence', 'name', 'icon', 'uri', 'name'];
 
+    protected $casts = [
+        "detail" => "string",
+    ];
+
 }
