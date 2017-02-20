@@ -15,6 +15,7 @@ class UserSeeder extends Seeder {
             [
                 'name'     => 'admin' ,
                 'email'    => 'admin@admin.com' ,
+                'password' => ''
             ]
         );
         $admin->password = Hash::make('123456');

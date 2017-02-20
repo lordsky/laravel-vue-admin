@@ -19,6 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::group(['prefix' => 'api', 'middleware' => 'admin', 'namespace' => 'Api' ], function () {
+
+Route::get('/api/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('/api/login', 'Auth\LoginController@login');
+
+Route::group(['prefix' => 'api' , 'namespace' => 'Api' ], function () {
     Route::resource('menu', 'MenuController', ['only'=>['create','store','index','show','destroy']]);
 });
