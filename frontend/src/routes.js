@@ -6,7 +6,7 @@ import OrderView from './views/order/Index.vue'
 import OrderDetailView from './views/order/Detail.vue'
 import GeneratorCreateView from './views/generator/Create.vue'
 import CategoryView from './views/category/Index.vue'
-import CategoryCreateView from './views/category/Create.vue'
+import MenuView from './views/menu/Index.vue'
 
 const routes = [
   {
@@ -38,9 +38,9 @@ const routes = [
         component: CategoryView,
         name: '分类'
       }, {
-        path: 'category/create',
-        component: CategoryCreateView,
-        name: '创建新分类'
+        path: 'menu',
+        component: MenuView,
+        name: '菜单'
       }, {
         path: 'generator',
         component: GeneratorCreateView,
