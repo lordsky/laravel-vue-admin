@@ -36,8 +36,8 @@ module.exports = {
     return {
       section: 'Login',
       loading: '',
-      username: 'admin',
-      password: '123qwe',
+      username: 'admin@admin.com',
+      password: '123456',
       response: ''
     }
   },

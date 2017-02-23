@@ -59,10 +59,12 @@ axios.interceptors.response.use(function (response) {
   } else if (status === 404) {
     errormsg = '请求资源错误'
   } else {
-    errormsg = '服务器异常，请稍后重试'
+    // errormsg = '服务器异常，请稍后重试'
   }
   // alert('server is wrong，请刷新重试')
-  window.toastr.error(errormsg)
+  if (errormsg !== '') {
+    window.toastr.error(errormsg)
+  }
     // Do something with response error
   return Promise.reject(error)
 })

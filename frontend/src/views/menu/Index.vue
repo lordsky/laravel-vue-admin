@@ -14,20 +14,22 @@
               <thead>
                 <tr>
                   <th>id</th>
-                  <th>分类名</th>
+                  <th>名称</th>
+                  <th>icon</th>
+                  <th>url</th>
                   <th>优先级</th>
-                  <th>是否启用</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for='item in categories'>
+                <tr v-for='item in menus'>
                   <td>{{ item.id }}</td>
                   <td>{{ item.name }}</td>
+                  <td><i class='fa' v-bind:class='item.icon'></i></td>
+                  <td>{{ item.uri }}</td>
                   <td>{{ item.sequence }}</td>
-                  <td>{{ item.status }}</td>
                   <td>
-                    <button class="btn btn-info" @click='edit(item)'>编辑</button>
+                    <button class="btn btn-info"  @click='edit(item)'>编辑</button>
                     <button class="btn btn-danger" @click='remove(item)'>删除</button>
                   </td>
                 </tr>
@@ -47,17 +49,67 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">分类名</label>
-                  <input type="text" name='name' v-model='name' v-validate="'required|min:2'" class="form-control" placeholder="">
+                  <label for="exampleInputEmail1">名称</label>
+                  <input type="text" name='name' v-model='newItem.name' v-validate="'required|min:2'" class="form-control" placeholder="">
                   <span class='help text-danger' v-show="errors.has('name')">{{ errors.first('name') }}</span>
+                  <span class='error text-danger' v-show="formErrors['name']">{{ formErrors['name'] }}</span>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputPassword1">说明</label>
-                  <input type="text" name='desc' v-model='desc' class="form-control" />
+                  <input type="text" name='desc' v-model='newItem.detail' class="form-control" />
+                  <span class='error text-danger' v-show="formErrors['detail']">{{ formErrors['detail'] }}</span>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputPassword1">状态</label>
-                  <input type="text" name='status' v-model='status' v-validate="'required'" class="form-control" />
+                  <label for="exampleInputPassword1">icon</label>
+                  <input type="text" name='status' v-model='newItem.icon' v-validate="'required'" class="form-control" />
+                  <span class='error text-danger' v-show="formErrors['icon']">{{ formErrors['icon'] }}</span>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">uri</label>
+                  <input type="text" name='status' v-model='newItem.uri' v-validate="'required'" class="form-control" />
+                  <span class='error text-danger' v-show="formErrors['uri']">{{ formErrors['uri'] }}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" v-show='showEdit'>
+        <form @submit.prevent="add">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">编辑</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">名称</label>
+                  <input type="text" name='name' v-model='fillItem.name' v-validate="'required|min:2'" class="form-control" placeholder="">
+                  <span class='help text-danger' v-show="errors.has('name')">{{ errors.first('name') }}</span>
+                  <span class='error text-danger' v-show="formErrors['name']">{{ formErrors['name'] }}</span>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">说明</label>
+                  <input type="text" name='desc' v-model='fillItem.detail' class="form-control" />
+                  <span class='error text-danger' v-show="formErrors['detail']">{{ formErrors['detail'] }}</span>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">icon</label>
+                  <input type="text" name='status' v-model='fillItem.icon' v-validate="'required'" class="form-control" />
+                  <span class='error text-danger' v-show="formErrors['icon']">{{ formErrors['icon'] }}</span>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">uri</label>
+                  <input type="text" name='status' v-model='fillItem.uri' v-validate="'required'" class="form-control" />
+                  <span class='error text-danger' v-show="formErrors['uri']">{{ formErrors['uri'] }}</span>
                 </div>
             </div>
             <div class="modal-footer">
@@ -81,9 +133,10 @@
       return {
         menus: {},
         showAdd: false,
-        name: '',
-        status: '',
-        desc: ''
+        showEdit: true,
+        newItem: {'name': '', 'detail': '', 'icon': '', 'uri': ''},
+        fillItem: {'name': '', 'detail': '', 'icon': '', 'uri': ''},
+        formErrors: {}
       }
     },
     methods: {
@@ -91,7 +144,7 @@
         this.$http.get('menu').then((response) => {
           var result = response.data.data
           console.log('result', result)
-          this.categories = result
+          this.menus = result
         })
       },
       add () {
@@ -99,20 +152,22 @@
           if (!success) {
             return
           }
-          var params = {
-            name: this.name,
-            status: this.status,
-            desc: this.desc
-          }
-          this.$http.post('menu', params).then((response) => {
+          this.$http.post('menu', this.newItem).then((response) => {
             var result = response.data
             console.log('result', result)
+          }).catch(error => {
+            console.log('error result', error.response)
+            this.formErrors = error.response.data
+            console.log('this.formErrors', this.formErrors)
           })
         }).catch(errormgs => {
           window.toastr.error('请完整填写表单')
         })
       },
       edit (item) {
+        this.fillIte = item
+        this.showEdit = true
+        // window.$('#editModel').modal('show')
       },
       remove (item) {
         window.swal({

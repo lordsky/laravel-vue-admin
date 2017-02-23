@@ -23,7 +23,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/api': {
-            target: 'http://localhost/',
+            target: 'http://vueadmin.dev/',
             changeOrigin: true,
             pathRewrite: {
               '^/api': '/api'

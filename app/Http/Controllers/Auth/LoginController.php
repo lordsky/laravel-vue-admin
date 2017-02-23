@@ -35,7 +35,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+//        $this->middleware('guest', ['except' => 'logout']);
         logger()->info('test');
     }
 
@@ -43,7 +43,7 @@ class LoginController extends Controller
         logger()->info(__CLASS__.__LINE__);
         if( $request->ajax() ){
             logger()->info(__CLASS__.__LINE__);
-            return response()->json($user);
+            return response()->json(['data'=>$user]);
         }else{
             return redirect()->intended($this->redirectPath());
         }

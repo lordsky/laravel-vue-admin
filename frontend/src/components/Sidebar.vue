@@ -85,6 +85,11 @@ export default {
         class: '',
         href: '/admin/category'
       }, {
+        icon: 'fa-list',
+        text: '菜单管理',
+        class: '',
+        href: '/admin/menu'
+      }, {
         icon: 'fa-file-o',
         text: '日志管理',
         class: '',
