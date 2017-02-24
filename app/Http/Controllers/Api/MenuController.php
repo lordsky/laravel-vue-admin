@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class MenuController extends BaseApiController {
 
     public function index() {
-        $data = Menu::paginate();
+        $data = Menu::OrderBy('sequence','desc')->paginate();
         return response()->json($data);
     }
 
@@ -20,7 +20,9 @@ class MenuController extends BaseApiController {
                 'detail' => 'required|max:100' ,
             ]
         );
-        if ( Menu::create($request->all()) ) {
+        $data = $request->all();
+        $data['sequence'] = Menu::max('sequence') + 1;
+        if ( Menu::create($data) ) {
             return $this->apiReturn(true , '添加成功');
         }
     }
@@ -31,7 +33,7 @@ class MenuController extends BaseApiController {
             return $this->apiReturn(false , '更新失败');
         }
         if ( $menu->update($request->all()) ) {
-            return $this->apiReturn(true , '更新成功');
+            return $this->apiReturn(true , '更新id为'.$id.'的数据成功');
         }
         return $this->apiReturn(false , '更新失败');
     }

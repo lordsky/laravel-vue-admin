@@ -10,6 +10,12 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
+            <div class="alert alert-success" role="alert" v-show='showSuccess'>
+              {{ message }}
+            </div>
+            <div class="alert alert-danger" role="alert" v-show='showError'>
+              {{ message }}
+            </div>
             <table id="project-table" class="table table-condensed table-bordered table-striped">
               <thead>
                 <tr>
@@ -25,7 +31,7 @@
                 <tr v-for='item in menus'>
                   <td>{{ item.id }}</td>
                   <td>{{ item.name }}</td>
-                  <td><i class='fa' v-bind:class='item.icon'></i></td>
+                  <td><i v-bind:class="'fa fa-' +item.icon + ''"></i></td>
                   <td>{{ item.uri }}</td>
                   <td>{{ item.sequence }}</td>
                   <td>
@@ -40,12 +46,12 @@
         </div>
       </div>
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-        <form @submit.prevent="add">
+        <form @submit.prevent="add" data-vv-scope="addForm">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">新建分类</h4>
+              <h4 class="modal-title">新建</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -81,8 +87,8 @@
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
-      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" v-show='showEdit'>
-        <form @submit.prevent="add">
+      <div class="modal fade" id="editModal" tabindex="-1" role="dialog">
+        <form @submit.prevent="update(fillItem.id)" data-vv-scope="updateForm">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -132,11 +138,12 @@
     data: function () {
       return {
         menus: {},
-        showAdd: false,
-        showEdit: true,
         newItem: {'name': '', 'detail': '', 'icon': '', 'uri': ''},
         fillItem: {'name': '', 'detail': '', 'icon': '', 'uri': ''},
-        formErrors: {}
+        formErrors: {},
+        showSuccess: false,
+        showError: false,
+        message: ''
       }
     },
     methods: {
@@ -148,13 +155,17 @@
         })
       },
       add () {
-        this.$validator.validateAll().then(success => {
+        this.$validator.validateAll('addForm').then(success => {
           if (!success) {
             return
           }
           this.$http.post('menu', this.newItem).then((response) => {
             var result = response.data
             console.log('result', result)
+            this.message = result.message
+            this.showSuccess = true
+            this.loadData()
+            window.$('#myModal').modal('hide')
           }).catch(error => {
             console.log('error result', error.response)
             this.formErrors = error.response.data
@@ -165,9 +176,29 @@
         })
       },
       edit (item) {
-        this.fillIte = item
-        this.showEdit = true
-        // window.$('#editModel').modal('show')
+        this.fillItem = item
+        window.$('#editModal').modal('show')
+      },
+      update (id) {
+        this.$validator.validateAll('updateForm').then(success => {
+          if (!success) {
+            return
+          }
+          this.$http.put('menu/' + id, this.fillItem).then((response) => {
+            var result = response.data
+            console.log('result', result)
+            this.message = result.message
+            this.showSuccess = true
+            this.loadData()
+            window.$('#editModal').modal('hide')
+          }).catch(error => {
+            console.log('error result', error.response)
+            this.formErrors = error.response.data
+            console.log('this.formErrors', this.formErrors)
+          })
+        }).catch(errormgs => {
+          window.toastr.error('请完整填写表单')
+        })
       },
       remove (item) {
         window.swal({

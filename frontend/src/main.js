@@ -5,6 +5,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import App from './App'
 import VueRouter from 'vue-router'
+
 import VeeValidate from 'vee-validate'
 import messagesZH from './assets/js/validdate_zh_CN'
 require('toastr/build/toastr.min.css')
@@ -33,7 +34,7 @@ Vue.use(VeeValidate, {
   }
 })
 // Vue.use(VueResource)
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = '/api/v1'
 axios.defaults.headers.common['csrf_token'] = window.Laravel_csrfToken
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 axios.interceptors.request.use(function (config) {
