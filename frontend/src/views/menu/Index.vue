@@ -7,6 +7,7 @@
           <div class="box-header">
             <h3 class="box-title">菜单列表</h3>
             <button class='btn btn-primary pull-right' data-toggle="modal" data-target="#myModal">添加</button>
+            <button @click='saveSort()' v-show='showSortBtn' class='btn btn-info pull-right'>保存排序</button>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -20,6 +21,7 @@
               <thead>
                 <tr>
                   <th>id</th>
+                  <th>id</th>
                   <th>名称</th>
                   <th>icon</th>
                   <th>url</th>
@@ -27,8 +29,9 @@
                   <th>操作</th>
                 </tr>
               </thead>
-              <tbody>
+                <draggable :list='menus' element="tbody" :move="onMove">
                 <tr v-for='item in menus'>
+                  <td><i class='fa fa-anchor' aria-hidden="true"></i></td>
                   <td>{{ item.id }}</td>
                   <td>{{ item.name }}</td>
                   <td><i v-bind:class="'fa fa-' +item.icon + ''"></i></td>
@@ -39,7 +42,8 @@
                     <button class="btn btn-danger" @click='remove(item)'>删除</button>
                   </td>
                 </tr>
-              </tbody>
+                </transition-group>
+                </draggable>
             </table>
             <!-- /.box-body -->
           </div>
@@ -133,8 +137,12 @@
   </section>
 </template>
 <script>
+  import draggable from 'vuedraggable'
   module.exports = {
     name: 'menu',
+    components: {
+      draggable
+    },
     data: function () {
       return {
         menus: {},
@@ -143,6 +151,7 @@
         formErrors: {},
         showSuccess: false,
         showError: false,
+        showSortBtn: false,
         message: ''
       }
     },
@@ -215,6 +224,19 @@
             window.swal('删除成功', '成功删除', 'success')
           })
         })
+      },
+      saveSort () {
+        this.$http.post('menu/sort', this.menus).then((response) => {
+          var result = response.data
+          this.message = result.message
+          this.showSuccess = true
+          this.loadData()
+        }).catch(() => {
+          window.toastr.error('更新失败')
+        })
+      },
+      onMove ({relatedContext, draggedContext}) {
+        this.showSortBtn = true
       }
     },
     mounted () {

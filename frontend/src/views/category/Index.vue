@@ -13,6 +13,7 @@
             <table id="project-table" class="table table-condensed table-bordered table-striped">
               <thead>
                 <tr>
+                  <th></th>
                   <th>id</th>
                   <th>分类名</th>
                   <th>优先级</th>
@@ -21,7 +22,10 @@
                 </tr>
               </thead>
               <tbody>
+                <draggable class="list-group" element="ul" :list="categories" :options="dragOptions" :move="onMove" @start="isDragging=true" @end="isDragging=false"> 
+                  <transition-group type="transition" :name="'flip-list'">
                 <tr v-for='item in categories'>
+                  <td><i :class="element.fixed? 'fa fa-anchor' : 'glyphicon glyphicon-pushpin'" @click=" element.fixed=! element.fixed" aria-hidden="true"></i></td>
                   <td>{{ item.id }}</td>
                   <td>{{ item.name }}</td>
                   <td>{{ item.sequence }}</td>
@@ -31,6 +35,8 @@
                     <button class="btn btn-danger" @click='remove(item)'>删除</button>
                   </td>
                 </tr>
+                </transition-group>
+                </draggable>
               </tbody>
             </table>
             <!-- /.box-body -->
@@ -75,8 +81,12 @@
   </section>
 </template>
 <script>
+  import draggable from 'vuedraggable'
   module.exports = {
     name: 'Tables',
+    components: {
+      draggable
+    },
     data: function () {
       return {
         categories: {},
