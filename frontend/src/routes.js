@@ -7,6 +7,8 @@ import OrderDetailView from './views/order/Detail.vue'
 import GeneratorCreateView from './views/generator/Create.vue'
 import CategoryView from './views/category/Index.vue'
 import MenuView from './views/menu/Index.vue'
+import PermissionView from './views/system/permission.vue'
+import RoleView from './views/system/role.vue'
 
 const routes = [
   {
@@ -41,6 +43,14 @@ const routes = [
         path: 'menu',
         component: MenuView,
         name: '菜单'
+      }, {
+        path: 'system/permission',
+        component: PermissionView,
+        name: '权限管理'
+      }, {
+        path: 'system/role',
+        component: RoleView,
+        name: '角色管理'
       }, {
         path: 'generator',
         component: GeneratorCreateView,

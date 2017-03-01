@@ -1,92 +1,35 @@
 <?php
 
-use App\Models\Menu;
+use App\Models\GoodsCategory;
 use Illuminate\Database\Seeder;
 
-class MenuSeeder extends Seeder
-{
+class GoodsCategorySeeder extends Seeder {
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
-    {
-        //仪表盘
-        Menu::create([
-            'parent_id' => 0,
-            'sequence' => 1,
-            'name' => '仪表盘',
-            'icon' => 'speedometer',
-            'uri' => 'dashboard',
-        ]);
-
-        Menu::create([
-            'parent_id' => 1,
-            'sequence' => 1,
-            'name' => '系统总览',
-            'icon' => 'notebook',
-            'uri' => 'index',
-        ]);
-
-        Menu::create([
-            'parent_id' => 1,
-            'sequence' => 2,
-            'name' => '图标参考',
-            'icon' => 'list',
-            'uri' => 'admin.icon',
-        ]);
-
-        //用户管理
-        Menu::create([
-            'parent_id' => 0,
-            'sequence' => 2,
-            'name' => '用户管理',
-            'icon' => 'settings',
-            'uri' => 'user',
-        ]);
-
-        Menu::create([
-            'parent_id' => 4,
-            'sequence' => 2,
-            'name' => '用户组管理',
-            'icon' => 'list',
-            'uri' => 'role',
-        ]);
-
-        Menu::create([
-            'parent_id' => 4,
-            'sequence' => 3,
-            'name' => '用户组权限',
-            'icon' => 'list',
-            'uri' => 'permission',
-        ]);
-
-        //设置
-        Menu::create([
-            'parent_id' => 0,
-            'sequence' => 3,
-            'name' => '设置',
-            'icon' => 'settings',
-            'uri' => 'setting',
-        ]);
-
-        Menu::create([
-            'parent_id' => 8,
-            'sequence' => 1,
-            'name' => '编辑菜单',
-            'icon' => 'list',
-            'uri' => 'menu',
-        ]);
-
-        //系统日志
-        Menu::create([
-            'parent_id' => 0,
-            'sequence' => 3,
-            'name' => '系统日志',
-            'icon' => 'settings',
-            'uri' => 'log',
-        ]);
-
+    public function run() {
+        GoodsCategory::create(
+            [
+                'sequence' => 1 ,
+                'name'     => '周边' ,
+                'detail'   => '周边产品' ,
+            ]
+        );
+        GoodsCategory::create(
+            [
+                'sequence' => 2 ,
+                'name'     => '配件' ,
+                'detail'   => '很多配件呢' ,
+            ]
+        );
+        GoodsCategory::create(
+            [
+                'sequence' => 3 ,
+                'name'     => '手机' ,
+                'detail'   => '手机产品' ,
+            ]
+        );
     }
 }

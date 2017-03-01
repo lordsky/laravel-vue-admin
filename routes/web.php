@@ -26,4 +26,8 @@ Route::post('/api/v1/login', 'Auth\LoginController@login');
 Route::group(['prefix' => 'api/v1' , 'namespace' => 'Api' ], function () {
     Route::post('menu/sort', 'MenuController@sort');
     Route::resource('menu', 'MenuController', ['only'=>['create','store','index','show','destroy','update']]);
+    Route::post('goods_category/sort', 'GoodsCategoryController@sort');
+    Route::resource('goods_category', 'GoodsCategoryController', ['only'=>['create','store','index','show','destroy','update']]);
+    Route::resource('system/permission', 'PermissionController', ['only'=>['create','store','index','show','destroy','update']]);
+    Route::resource('system/role', 'RoleController', ['only'=>['create','store','index','show','destroy','update']]);
 });

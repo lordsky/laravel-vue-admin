@@ -94,6 +94,17 @@ export default {
         text: '日志管理',
         class: '',
         href: '/admin/log'
+      }, {
+        icon: 'fa-server',
+        text: '系统管理',
+        class: '',
+        childMenus: [{
+          href: '/admin/system/permission',
+          text: '权限管理'
+        }, {
+          href: '/admin/system/role',
+          text: '角色管理'
+        }]
       }]
     }
   },

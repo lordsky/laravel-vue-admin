@@ -9,7 +9,7 @@ class MenuController extends BaseApiController {
 
     public function index() {
         $data = Menu::OrderBy('sequence' , 'desc')->paginate();
-        return response()->json($data);
+        return $this->apiReturn(true,'ok',$data);
     }
 
     public function store(Request $request) {
@@ -54,6 +54,6 @@ class MenuController extends BaseApiController {
             Menu::find($menu['id'])->update(['sequence' => $index]);
             $index--;
         }
-        return $this->apiReturn(true , '更新成功');
+        return $this->apiReturn(true , '更新排序成功');
     }
 }

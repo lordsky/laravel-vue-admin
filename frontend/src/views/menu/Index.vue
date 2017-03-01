@@ -31,7 +31,7 @@
               </thead>
                 <draggable :list='menus' element="tbody" :move="onMove">
                 <tr v-for='item in menus'>
-                  <td><i class='fa fa-anchor' aria-hidden="true"></i></td>
+                  <td><i class='fa fa-anchor dargDiv' aria-hidden="true"></i></td>
                   <td>{{ item.id }}</td>
                   <td>{{ item.name }}</td>
                   <td><i v-bind:class="'fa fa-' +item.icon + ''"></i></td>
@@ -157,9 +157,10 @@
     },
     methods: {
       loadData () {
+        this.showSortBtn = false
         this.$http.get('menu').then((response) => {
-          var result = response.data.data
-          console.log('result', result)
+          var result = response.data.data.data
+          console.log('menu', result)
           this.menus = result
         })
       },
@@ -246,3 +247,11 @@
   }
 
 </script>
+<style>
+.dargDiv{
+    text-align: center;
+    cursor:move;
+    width:100%;
+    height:100%;
+}
+</style>
