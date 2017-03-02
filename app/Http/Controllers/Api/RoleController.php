@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,12 @@ class RoleController extends BaseApiController {
         if ( Role::create($data) ) {
             return $this->apiReturn(true , '添加成功');
         }
+    }
+
+    public function create(){
+        $dataBuilder = Permission::select('*')->where('parent_id',0)->with('children');
+        $permissions = $dataBuilder->orderBy('id','desc')->get();
+        return $this->apiReturn(true,'ok',$permissions);
     }
 
     public function update(Request $request , $id) {

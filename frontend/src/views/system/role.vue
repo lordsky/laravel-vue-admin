@@ -10,7 +10,10 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-              
+              <label>
+                                                <input type="checkbox" name="permissions[]"
+                                                        data-ucheck>
+                                                </label>
             <div class="alert alert-success" role="alert" v-show='showSuccess'>
               {{ message }}
             </div>
@@ -21,15 +24,17 @@
               <thead>
                 <tr>
                   <th>id</th>
+                  <th>标识</th>
                   <th>名称</th>
                   <th>描述</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for='item in menus'>
+                <tr v-for='item in roles'>
                   <td>{{ item.id }}</td>
                   <td>{{ item.name }}</td>
+                  <td>{{ item.display_name }}</td>
                   <td>{{ item.description }}</td>
                   <td>
                     <button class="btn btn-info"  @click='edit(item)'>编辑</button>
@@ -51,6 +56,12 @@
               <h4 class="modal-title">新建</h4>
             </div>
             <div class="modal-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">标识</label>
+                  <input type="text" name='name' v-model='newItem.name' v-validate="'required|alpha_num|min:2'" class="form-control" placeholder="">
+                  <span class='help text-danger' v-show="errors.has('name')">{{ errors.first('name') }}</span>
+                  <span class='error text-danger' v-show="formErrors['name']">{{ formErrors['name'] }}</span>
+                </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">名称</label>
                   <input type="text" name='display_name' v-model='newItem.display_name' v-validate="'required|min:2'" class="form-control" placeholder="">
@@ -83,6 +94,12 @@
               <h4 class="modal-title">编辑</h4>
             </div>
             <div class="modal-body">
+              <div class="form-group">
+                  <label for="exampleInputEmail1">标识</label>
+                  <input type="text" name='name' v-model='fillItem.name' v-validate="'required|alpha_num|min:2'" class="form-control" placeholder="">
+                  <span class='help text-danger' v-show="errors.has('name')">{{ errors.first('name') }}</span>
+                  <span class='error text-danger' v-show="formErrors['name']">{{ formErrors['name'] }}</span>
+                </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">名称</label>
                   <input type="text" name='display_name' v-model='fillItem.display_name' v-validate="'required|min:2'" class="form-control" placeholder="">
@@ -106,6 +123,28 @@
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
+
+    <div class="row" id="role_actions">
+    <div class="panel panel-default">
+        <div class="panel-body">
+                <div class="col-md-12" v-for='permission in permissions'>
+                    <div class="panel panel-default">
+                        <div class="panel-heading" :title="permission.description">{{ permission.display_name }}
+                        <button class='btn btn-info pull-right btn-sm' @click='selectAll(permission.children)'>全选</button>
+                        </div>
+                        <div class="panel-body">
+                                
+                                <div class="col-md-2" v-for='subPermission in permission.children'>
+                                  <label>
+                                          <input type="checkbox" name="permissions[]" :checked='subPermission.checked'>
+                                          {{ subPermission.display_name }}</label>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
     </div>
   </section>
 </template>
@@ -114,14 +153,15 @@
     name: 'role',
     data: function () {
       return {
-        menus: {},
-        newItem: {'description': '', 'display_name': '', 'uri': ''},
-        fillItem: {'description': '', 'display_name': '', 'uri': ''},
+        roles: {},
+        newItem: {'name': '', 'description': '', 'display_name': '', 'uri': ''},
+        fillItem: {'name': '', 'description': '', 'display_name': '', 'uri': ''},
         formErrors: {},
         showSuccess: false,
         showError: false,
         showSortBtn: false,
-        message: ''
+        message: '',
+        permissions: {}
       }
     },
     methods: {
@@ -129,7 +169,14 @@
         this.showSortBtn = false
         this.$http.get('system/role').then((response) => {
           var result = response.data.data.data
-          this.menus = result
+          this.roles = result
+        })
+      },
+      loadPermissionData () {
+        this.$http.get('system/role/create').then((response) => {
+          var result = response.data.data
+          console.log('permissions result', result)
+          this.permissions = result
         })
       },
       add () {
@@ -193,10 +240,22 @@
             window.swal('删除成功', '成功删除', 'success')
           })
         })
+      },
+      selectAll (permissions) {
+        console.log('permissions before', permissions)
+        // permissions.each((item) => {
+        //   item.checked = true
+        // })
+        for (var i in permissions) {
+          permissions[i].checked = 'checked'
+        }
+        console.log('permissions after', permissions)
       }
     },
     mounted () {
       this.loadData()
+      this.loadPermissionData()
+      window.setICheck()
     }
   }
 
