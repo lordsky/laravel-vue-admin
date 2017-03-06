@@ -6,18 +6,24 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
-class User extends Authenticatable
-{
+class User extends Authenticatable {
     use Notifiable;
     use EntrustUserTrait;
 
+    public static $rules = [
+        "name"     => "required|unique:users" ,
+        "email"     => "required|unique:users|email" ,
+        "password" => "required|min:6" ,
+    ];
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name' ,
+        'email' ,
+        'password' ,
     ];
 
     /**
@@ -26,6 +32,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password' ,
+        'remember_token' ,
     ];
 }

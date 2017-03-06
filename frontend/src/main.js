@@ -9,7 +9,7 @@ import VueRouter from 'vue-router'
 import VeeValidate from 'vee-validate'
 import messagesZH from './assets/js/validdate_zh_CN'
 require('toastr/build/toastr.min.css')
-require('sweetalert/dist/sweetalert.css')
+// require('sweetalert/dist/sweetalert.css')
 require('./assets/css/font-awesome.css')
 // import VueResource from 'vue-resource'
 
@@ -17,7 +17,7 @@ import routes from './routes'
 import store from './store/'
 
 window.toastr = require('toastr/build/toastr.min.js')
-require('sweetalert/dist/sweetalert.min.js')
+// require('sweetalert/dist/sweetalert.min.js')
 
 // start mock
 // import Mock from './mock'
@@ -59,8 +59,11 @@ axios.interceptors.response.use(function (response) {
     errormsg = '禁止访问'
   } else if (status === 404) {
     errormsg = '请求资源错误'
+  } else if (status === 401) {
+    window.location.href = '/'
+    errormsg = '请重新登录'
   } else {
-    // errormsg = '服务器异常，请稍后重试'
+    errormsg = '服务器出现错误，请刷新页面重试'
   }
   // alert('server is wrong，请刷新重试')
   if (errormsg !== '') {
@@ -92,6 +95,7 @@ Vue.prototype.$http = axios
 var router = new VueRouter({
   routes: routes,
   mode: 'hash',
+  linkActiveClass: 'active',
   // mode: 'history',
   scrollBehavior: function (to, from, savedPosition) {
     return savedPosition || { x: 0, y: 0 }

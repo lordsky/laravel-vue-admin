@@ -23,7 +23,7 @@
             <li class="dropdown user user-menu">
               <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                 <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                <span class="hidden-xs">{{this.$store.state.user.username }}</span>
+                <span class="hidden-xs">{{this.$store.state.user.name }}</span>
               </a>
             </li>
           </ul>

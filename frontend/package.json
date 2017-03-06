@@ -18,6 +18,7 @@
     "datatables.net": "^2.1.1",
     "datatables.net-bs": "^2.1.1",
     "jquery": "^3.1.1",
+    "lodash": "^4.17.4",
     "mock": "^0.1.1",
     "mockjs": "^1.0.1-beta3",
     "sweetalert": "^1.1.3",

@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
-{
+class LoginController extends Controller {
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -28,23 +27,28 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/home';
 
+    public function username() {
+        return 'name';
+    }
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
 //        $this->middleware('guest', ['except' => 'logout']);
-        logger()->info('test');
     }
 
-    public function authenticated(Request $request,$user) {
-        logger()->info(__CLASS__.__LINE__);
-        if( $request->ajax() ){
-            logger()->info(__CLASS__.__LINE__);
-            return response()->json(['data'=>$user]);
-        }else{
+    public function authenticated(Request $request , $user) {
+        logger()->info(__CLASS__ . __LINE__);
+        $user_roles = $user->roles()->first()->cachedPermissions()->toArray();
+        $permissions = array_pluck($user_roles , 'name');
+        $user->permissions = $permissions;
+        if ( $request->ajax() ) {
+            logger()->info(__CLASS__ . __LINE__);
+            return response()->json(['data' => $user]);
+        } else {
             return redirect()->intended($this->redirectPath());
         }
     }

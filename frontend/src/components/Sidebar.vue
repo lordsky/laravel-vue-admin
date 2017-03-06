@@ -35,7 +35,7 @@
     </ul> -->
     <ul class="nav sidebar-menu">
       <!--通过v-for来进行菜单列表的显示，并绑定v-on:click事件进行点击控制-->
-      <li v-for="menu in menus" v-on:click="toggleMenu(menu)" v-bind:class="{treeview: !menu.href}">
+      <li v-for="menu in menus_auth" v-on:click="toggleMenu(menu)" v-bind:class="{treeview: !menu.href}" v-show="menu.show">
         <a :to='menu.href' href='void(0)'><i class="fa" v-bind:class="menu.icon"></i><span>{{menu.text}}</span><i v-show="!menu.href" class="fa fa-angle-left pull-right"></i></a>
         <transition name="slide">
           <ul class="treeview-menu menu-open" v-on:click.stop>
@@ -49,6 +49,7 @@
   </div>
 </template>
 <script>
+import _ from 'lodash'
 export default {
   data () {
     return {
@@ -99,6 +100,9 @@ export default {
         text: '系统管理',
         class: '',
         childMenus: [{
+          href: '/admin/system/user',
+          text: '用户管理'
+        }, {
           href: '/admin/system/permission',
           text: '权限管理'
         }, {
@@ -110,11 +114,31 @@ export default {
   },
   mounted () {
     this.expandAllMenu()
+    // console.log(this.menus)
   },
   watch: {
     $route () {
       // 检查是否一级菜单链接
       this.checkMenuActived(this.$route.path)
+    }
+  },
+  computed: {
+    permissions () {
+      return this.$store.state.user.permissions
+    },
+    menus_auth () {
+      for (var index in this.menus) {
+        var item = this.menus[index]
+        item.show = true
+        if (item.childMenus) {
+          if (_.indexOf(this.permissions, item.href)) {
+            item.show = true
+          }
+        } else {
+        }
+      }
+      console.log(this.menus)
+      return this.menus
     }
   },
   methods: {

@@ -9,6 +9,7 @@ import CategoryView from './views/category/Index.vue'
 import MenuView from './views/menu/Index.vue'
 import PermissionView from './views/system/permission.vue'
 import RoleView from './views/system/role.vue'
+import UserView from './views/system/user.vue'
 
 const routes = [
   {
@@ -51,6 +52,10 @@ const routes = [
         path: 'system/role',
         component: RoleView,
         name: '角色管理'
+      }, {
+        path: 'system/user',
+        component: UserView,
+        name: '用户管理'
       }, {
         path: 'generator',
         component: GeneratorCreateView,
