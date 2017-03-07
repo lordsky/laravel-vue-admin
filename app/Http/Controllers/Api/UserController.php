@@ -16,7 +16,8 @@ class userController extends BaseApiController {
     public function store(Request $request) {
         $this->validate($request , User::$rules);
         $data = $request->all();
-        if ( User::create($data) ) {
+        if ( $user = User::create($data) ) {
+            $user->roles()->sync([$data['role_id']]);
             return $this->apiReturn(true , '添加成功');
         }
     }
@@ -28,11 +29,20 @@ class userController extends BaseApiController {
     }
 
     public function update(Request $request , $id) {
-        $menu = User::find($id);
-        if ( !$menu ) {
+        $this->validate($request , User::$rules);
+        $user = User::find($id);
+        if ( !$user ) {
             return $this->apiReturn(false , '更新失败');
         }
-        if ( $menu->update($request->all()) ) {
+        $data = $request->all();
+        if( $request->has('password') && !empty($request->input('password')) ){
+            $data['password'] = bcrypt($data['password']);
+        }else{
+            unset($data['password']);
+        }
+        $user->update($data);
+        if ( !empty($data['role_id']) ) {
+            $user->roles()->sync([$data['role_id']]);
             return $this->apiReturn(true , '更新id为' . $id . '的数据成功');
         }
         return $this->apiReturn(false , '更新失败');

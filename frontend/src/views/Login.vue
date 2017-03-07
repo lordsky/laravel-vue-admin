@@ -49,7 +49,7 @@ module.exports = {
       this.toggleLoading()
       this.resetResponse()
       //  Login
-      this.$http.post('login', { email: this.username, password: this.password }).then((response) => {
+      this.$http.post('login', { name: this.username, password: this.password }).then((response) => {
         if (response.data) {
           var data = response.data
           if (data.error) {

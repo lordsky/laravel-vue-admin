@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Lang;
 
 class LoginController extends Controller {
     /*
@@ -51,5 +52,12 @@ class LoginController extends Controller {
         } else {
             return redirect()->intended($this->redirectPath());
         }
+    }
+
+    public function sendFailedLoginResponse() {
+        $data = [
+                $this->username() => Lang::get('auth.failed') ,
+            ];
+        return response()->json(['data' => $data]);
     }
 }

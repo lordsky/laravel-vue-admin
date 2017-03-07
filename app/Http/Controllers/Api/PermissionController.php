@@ -21,30 +21,30 @@ class PermissionController extends BaseApiController {
     }
 
     public function update(Request $request , $id) {
-        $menu = Permission::find($id);
-        if ( !$menu ) {
+        $permission = Permission::find($id);
+        if ( !$permission ) {
             return $this->apiReturn(false , '更新失败');
         }
-        if ( $menu->update($request->all()) ) {
+        if ( $permission->update($request->all()) ) {
             return $this->apiReturn(true , '更新id为' . $id . '的数据成功');
         }
         return $this->apiReturn(false , '更新失败');
     }
 
     public function destroy($id) {
-        $menu = Permission::find($id);
-        if ( $menu ) {
-            $menu->delete();
+        $permission = Permission::find($id);
+        if ( $permission ) {
+            $permission->delete();
             return $this->apiReturn(true , '删除成功');
         }
         return $this->apiReturn(false , '删除失败');
     }
 
     public function sort(Request $request) {
-        $menus = $request->all();
-        $index = count($menus);
-        foreach ( $menus as $menu ) {
-            Permission::find($menu['id'])->update(['sequence' => $index]);
+        $permissions = $request->all();
+        $index = count($permissions);
+        foreach ( $permissions as $permission ) {
+            Permission::find($permission['id'])->update(['sequence' => $index]);
             $index--;
         }
         return $this->apiReturn(true , '更新排序成功');

@@ -4,6 +4,9 @@ import NotFound from './views/404.vue'
 import DashboardView from './views/Dashboard.vue'
 import OrderView from './views/order/Index.vue'
 import OrderDetailView from './views/order/Detail.vue'
+import GoodsView from './views/goods/Index.vue'
+import GoodsAddView from './views/goods/add.vue'
+import CompanyView from './views/company/index.vue'
 import GeneratorCreateView from './views/generator/Create.vue'
 import CategoryView from './views/category/Index.vue'
 import MenuView from './views/menu/Index.vue'
@@ -37,9 +40,21 @@ const routes = [
         component: OrderDetailView,
         name: '订单详情'
       }, {
+        path: 'goods',
+        component: GoodsView,
+        name: '商品列表'
+      }, {
+        path: 'goods/add',
+        component: GoodsAddView,
+        name: '添加商品'
+      }, {
         path: 'category',
         component: CategoryView,
         name: '分类'
+      }, {
+        path: 'company',
+        component: CompanyView,
+        name: '子公司管理'
       }, {
         path: 'menu',
         component: MenuView,

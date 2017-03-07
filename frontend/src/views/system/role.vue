@@ -10,10 +10,6 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-              <label>
-                                                <input type="checkbox" name="permissions[]"
-                                                        data-ucheck>
-                                                </label>
             <div class="alert alert-success" role="alert" v-show='showSuccess'>
               {{ message }}
             </div>

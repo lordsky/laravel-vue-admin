@@ -59,27 +59,21 @@ export default {
         class: '',
         href: '/admin'
       }, {
-        icon: 'fa-dashboard', // icon用于储存菜单对应的图标
-        text: '服务管理', // text用于储存该菜单显示名 称
-        class: '',
-        childMenus: [{
-          href: '/admin', // href用于设定该菜单跳转路由
-          text: '首页' // text用于储存该菜单显示名称
-        }, {
-          href: '/admin/order', // href用于设定该菜单跳转路由
-          text: '订单列表' // text用于储存该菜单显示名称
-        }]
-      }, {
         icon: 'fa-cubes',
         text: '订单管理',
         class: '',
         childMenus: [{
           href: '/admin/order',
-          text: '产品信息'
+          text: '订单列表'
         }, {
           href: '/admin/order',
-          text: '新建'
+          text: '测试'
         }]
+      }, {
+        icon: 'fa-list',
+        text: '商品管理',
+        class: '',
+        href: '/admin/goods'
       }, {
         icon: 'fa-list',
         text: '商品分类管理',
@@ -87,14 +81,9 @@ export default {
         href: '/admin/category'
       }, {
         icon: 'fa-list',
-        text: '菜单管理',
+        text: '子公司管理',
         class: '',
-        href: '/admin/menu'
-      }, {
-        icon: 'fa-file-o',
-        text: '日志管理',
-        class: '',
-        href: '/admin/log'
+        href: '/admin/company'
       }, {
         icon: 'fa-server',
         text: '系统管理',
@@ -108,6 +97,16 @@ export default {
         }, {
           href: '/admin/system/role',
           text: '角色管理'
+        }, {
+          icon: 'fa-list',
+          text: '菜单管理',
+          class: '',
+          href: '/admin/menu'
+        }, {
+          icon: 'fa-file-o',
+          text: '日志管理',
+          class: '',
+          href: '/admin/log'
         }]
       }]
     }
