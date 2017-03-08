@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 
 class GoodsCategoryController extends BaseApiController {
 
-    public function index() {
+    public function index(Request $request) {
+//        $token = $request->headers->get('Authorization');
+//        $user = JWTAuth::toUser($token);
+        $user = $this->user();
         $data = GoodsCategory::OrderBy('sequence' , 'desc')->paginate();
         return $this->apiReturn(true,'ok',$data);
     }

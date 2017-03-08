@@ -49,7 +49,7 @@ module.exports = {
       this.toggleLoading()
       this.resetResponse()
       //  Login
-      this.$http.post('login', { name: this.username, password: this.password }).then((response) => {
+      this.$http.post('login', { email: this.username, password: this.password }).then((response) => {
         if (response.data) {
           var data = response.data
           if (data.error) {
@@ -64,8 +64,8 @@ module.exports = {
           } else {
             console.log('data', data, data.data)
             //  success. Let's load up the dashboard
-            if (data.data) {
-              this.USER_SIGNIN(data.data)
+            if (data.token) {
+              this.USER_SIGNIN(data)
               this.$router.replace({ path: '/admin' })
               // this.$router.push(data.redirect)
             }

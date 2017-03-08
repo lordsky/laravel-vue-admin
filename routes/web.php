@@ -21,9 +21,10 @@ Route::get('/home', 'HomeController@index');
 
 
 Route::get('/api/login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('/api/v1/login', 'Auth\LoginController@login');
+//Route::post('/api/v1/login', 'Auth\LoginController@login');
+Route::post('/api/v1/login', 'Api\LoginController@login');
 
-Route::group(['prefix' => 'api/v1' , 'namespace' => 'Api' ,'middleware' => 'admin' ], function () {
+Route::group(['prefix' => 'api/v1' , 'namespace' => 'Api' ,'middleware' => 'jwt.auth' ], function () {
     Route::resource('goods', 'GoodsController', ['only'=>['create','store','index','show','destroy','update']]);
     Route::resource('company', 'CompanyController', ['only'=>['create','store','index','show','destroy','update']]);
     Route::post('menu/sort', 'MenuController@sort');

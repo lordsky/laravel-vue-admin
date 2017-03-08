@@ -35,6 +35,9 @@ Vue.use(VeeValidate, {
 })
 // Vue.use(VueResource)
 axios.defaults.baseURL = '/api/v1'
+if (store.state.user.token) {
+  axios.defaults.headers.common['authorization'] = store.state.user.token
+}
 axios.defaults.headers.common['csrf_token'] = window.Laravel_csrfToken
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 axios.interceptors.request.use(function (config) {
@@ -105,7 +108,7 @@ var router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // window.console.log('Transition', transition)
   console.log('store.user', store.state.user)
-  var isLogin = Boolean(store.state.user.id)
+  var isLogin = Boolean(store.state.user.token)
   if (!isLogin && to.path !== '/login') {
     window.console.log('Not authenticated')
     return next({
