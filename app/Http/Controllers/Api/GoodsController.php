@@ -7,8 +7,21 @@ use Illuminate\Http\Request;
 
 class GoodsController extends BaseApiController {
 
-    public function index() {
-        $data = Goods::OrderBy('sequence' , 'desc')->paginate();
+    public function index(Request $request) {
+//        $data = Goods::with('category')->OrderBy('sequence' , 'desc')->paginate();
+        $queryBuilder = Goods::select('goods.*','goods_categories.name as category_name','companies.name as company_name')
+            ->leftJoin('goods_categories','goods.category_id','goods_categories.id')
+            ->leftJoin('companies','goods.company_id','companies.id');
+        if( $request->has('name') ){
+            $queryBuilder = $queryBuilder->where('goods.name',$request->input('name'));
+        }
+        if( $request->has('category_id') ){
+            $queryBuilder = $queryBuilder->where('goods.category_id',$request->input('category_id'));
+        }
+        if( $request->has('company_id') ){
+            $queryBuilder = $queryBuilder->where('goods.company_id',$request->input('company_id'));
+        }
+        $data = $queryBuilder->OrderBy('goods.sequence' , 'desc')->paginate();
         return $this->apiReturn(true,'ok',$data);
     }
 

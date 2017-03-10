@@ -17,7 +17,19 @@
                   <form class="form-inline" role="form" id='search'>
                     <div class="form-group">
                       <label class="sr-only" for="exampleInputEmail2">商品名称</label>
-                      <input type="text" class="form-control" id="exampleInputEmail2" placeholder="商品号" name='serial'>
+                      <input type="text" class="form-control" id="exampleInputEmail2" placeholder="商品名称" name='name'>
+                    </div>
+                    <div class="form-group">
+                      <label for="">商品分类</label>
+                      <select class="form-control" name='category_id'>
+                          <option :value="item.id" v-for='item in categories'>{{ item.name }}</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="">所属公司</label>
+                      <select class="form-control" name='company_id'>
+                          <option :value="item.id" v-for='item in companies'>{{ item.name }}</option>
+                      </select>
                     </div>
                     <button type="button" class="btn btn-primary but-large" @click='search'>查找</button>
                     <input type="hidden" name='limit' value="" id='limit' />
@@ -29,6 +41,8 @@
                       <tr>
                         <th>id</th>
                         <th>商品名称</th>
+                        <th>类型</th>
+                        <th>所属公司</th>
                         <th>商品图片</th>
                         <th>物料代码</th>
                         <th>内购价</th>
@@ -61,7 +75,9 @@ module.exports = {
   name: 'Tables',
   data: function () {
     return {
-      table: null
+      table: null,
+      categories: [],
+      companies: []
     }
   },
   methods: {
@@ -70,9 +86,24 @@ module.exports = {
     },
     add () {
       this.$router.push('/admin/goods/add')
+    },
+    loadCategoryData () {
+      this.$http.get('goods_category').then((response) => {
+        var result = response.data.data.data
+        console.log('categories data', result)
+        this.categories = result
+      })
+    },
+    loadCompanyData () {
+      this.$http.get('company').then((response) => {
+        var result = response.data.data.data
+        this.companies = result
+      })
     }
   },
   mounted: function () {
+    this.loadCategoryData()
+    this.loadCompanyData()
     this.$nextTick(function () {
       var self = this
       var table = $('#project-table').DataTable({
@@ -105,6 +136,12 @@ module.exports = {
         }, {
           data: 'name',
           name: 'name'
+        }, {
+          data: 'category_name',
+          name: 'category_name'
+        }, {
+          data: 'company_name',
+          name: 'company_name'
         }, {
           data: 'img',
           name: 'img'
@@ -141,10 +178,17 @@ module.exports = {
             }
           },
           {
-            'targets': 2,
+            'targets': 4,
             'data': 'img',
             'render': function (data, type, full) {
               return '<img src=' + data + ' width=140 height=100 />'
+            }
+          },
+          {
+            'targets': 10,
+            'data': 'online',
+            'render': function (data, type, full) {
+              return data ? '<span class="label label-success">上架中</span>' : '<span class="label label-danger">已下架</span>'
             }
           }
         ]

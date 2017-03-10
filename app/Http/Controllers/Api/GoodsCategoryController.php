@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Goods;
 use App\Models\GoodsCategory;
 use Illuminate\Http\Request;
 
@@ -36,30 +37,34 @@ class GoodsCategoryController extends BaseApiController {
     }
 
     public function update(Request $request , $id) {
-        $menu = GoodsCategory::find($id);
-        if ( !$menu ) {
+        $goodsCategory = GoodsCategory::find($id);
+        if ( !$goodsCategory ) {
             return $this->apiReturn(false , '更新失败');
         }
-        if ( $menu->update($request->all()) ) {
+        if ( $goodsCategory->update($request->all()) ) {
             return $this->apiReturn(true , '更新id为' . $id . '的数据成功');
         }
         return $this->apiReturn(false , '更新失败');
     }
 
     public function destroy($id) {
-        $menu = GoodsCategory::find($id);
-        if ( $menu ) {
-            $menu->delete();
+        //判断该分类下是否有商品
+        if( Goods::where('category_id',$id)->count()>0 ){
+            return $this->apiReturn(false , '删除失败，该分类下还有商品');
+        }
+        $goodsCategory = GoodsCategory::find($id);
+        if ( $goodsCategory ) {
+            $goodsCategory->delete();
             return $this->apiReturn(true , '删除成功');
         }
         return $this->apiReturn(false , '删除失败');
     }
 
     public function sort(Request $request) {
-        $menus = $request->all();
-        $index = count($menus);
-        foreach ( $menus as $menu ) {
-            GoodsCategory::find($menu['id'])->update(['sequence' => $index]);
+        $goodsCategorys = $request->all();
+        $index = count($goodsCategorys);
+        foreach ( $goodsCategorys as $goodsCategory ) {
+            GoodsCategory::find($goodsCategory['id'])->update(['sequence' => $index]);
             $index--;
         }
         return $this->apiReturn(true , '更新排序成功');

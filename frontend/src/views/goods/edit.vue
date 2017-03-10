@@ -40,25 +40,25 @@
             </div>
             <div class="form-group">
                 <label>内购价</label>
-                <input type="text" name='price' v-model='fillItem.price' v-validate="'required|numeric'" class="form-control" placeholder="">
+                <input type="text" name='price' v-model='fillItem.price' v-validate="'required|between:1,10000'" class="form-control" placeholder="">
                 <span class='help text-danger' v-show="errors.has('addForm.price')">{{ errors.first('addForm.price') }}</span>
                 <span class='error text-danger' v-show="formErrors['price']">{{ formErrors['price'] }}</span>
             </div>
             <div class="form-group">
                 <label>特惠价</label>
-                <input type="text" name='special_price' v-model='fillItem.special_price' v-validate="'numeric'" class="form-control" placeholder="">
+                <input type="text" name='special_price' v-model='fillItem.special_price' v-validate="'between:1,10000'" class="form-control" placeholder="">
                 <span class='help text-danger' v-show="errors.has('addForm.special_price')">{{ errors.first('addForm.special_price') }}</span>
                 <span class='error text-danger' v-show="formErrors['special_price']">{{ formErrors['special_price'] }}</span>
             </div>
             <div class="form-group">
                 <label>市场价</label>
-                <input type="text" name='official_price' v-model='fillItem.official_price' v-validate="'numeric'" class="form-control" placeholder="">
+                <input type="text" name='official_price' v-model='fillItem.official_price' v-validate="'between:1,10000'" class="form-control" placeholder="">
                 <span class='help text-danger' v-show="errors.has('addForm.official_price')">{{ errors.first('addForm.official_price') }}</span>
                 <span class='error text-danger' v-show="formErrors['official_price']">{{ formErrors['official_price'] }}</span>
             </div>
             <div class="form-group">
                 <label>图片</label>
-                <input type="file" ref="input" @change="uploadImg" name='img' v-validate="'required|image'" placeholder="">
+                <input type="file" ref="input" @change="uploadImg" name='img' v-validate="'image'" placeholder="">
                 <span class='help text-danger' v-show="errors.has('addForm.img')">{{ errors.first('addForm.img') }}</span>
                 <span class='error text-danger' v-show="formErrors['img']">{{ formErrors['img'] }}</span>
                 <img :src="fillItem.img" height=200 v-if='fillItem.img' />
@@ -110,6 +110,7 @@
         this.id = id
         this.$http.get('goods/' + id).then((response) => {
           var result = response.data.data
+          console.log('result', result)
           this.fillItem = result
         })
       },
@@ -124,6 +125,7 @@
         this.$http.get('company').then((response) => {
           var result = response.data.data.data
           this.companies = result
+          this.loadGoodsData()
         })
       },
       uploadImg () {
@@ -174,7 +176,6 @@
       }
     },
     mounted () {
-      this.loadGoodsData()
       this.loadCategoryData()
       this.loadCompanyData()
       window.setICheck()

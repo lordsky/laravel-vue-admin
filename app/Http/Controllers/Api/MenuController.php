@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Goods;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use Auth;
@@ -40,6 +41,11 @@ class MenuController extends BaseApiController {
     }
 
     public function destroy($id) {
+        //判断该分类下是否有商品
+        dd(Goods::where('category_id',$id)->count());
+        if( Goods::where('category_id',$id)->count()>0 ){
+            return $this->apiReturn(false , '删除失败，该分类下还有商品');
+        }
         $menu = Menu::find($id);
         if ( $menu ) {
             $menu->delete();

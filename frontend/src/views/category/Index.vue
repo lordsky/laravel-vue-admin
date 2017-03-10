@@ -200,7 +200,11 @@
             var result = response.data
             console.log('result', result)
             this.loadData()
-            window.swal('删除成功', '成功删除', 'success')
+            if (!result.status) {
+              window.toastr.error('删除失败，失败原因:' + result.message)
+            } else {
+              window.swal('删除成功', '成功删除', 'success')
+            }
           })
         })
       },

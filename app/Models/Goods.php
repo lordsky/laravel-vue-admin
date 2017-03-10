@@ -36,4 +36,8 @@ class Goods extends Model {
         "online"         => 'required|boolean' ,
         "stock"          => 'required:numeric' ,
     ];
+
+    public function category() {
+        return $this->hasOne($this , 'id','category_id');
+    }
 }

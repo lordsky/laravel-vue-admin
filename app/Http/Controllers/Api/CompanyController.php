@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Company;
+use App\Models\Goods;
 use Illuminate\Http\Request;
 
 class CompanyController extends BaseApiController {
@@ -38,6 +39,10 @@ class CompanyController extends BaseApiController {
 
     public function destroy($id) {
         $company = Company::find($id);
+        //判断该公司下是否有商品
+        if( Goods::where('company_id',$id)->count()>0 ){
+            return $this->apiReturn(false , '删除失败，该分类下还有商品');
+        }
         if ( $company ) {
             $company->delete();
             return $this->apiReturn(true , '删除成功');

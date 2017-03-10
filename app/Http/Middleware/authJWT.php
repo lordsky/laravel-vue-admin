@@ -8,6 +8,9 @@ use Exception;
 
 class authJWT {
     public function handle($request , Closure $next) {
+        if( !$request->ajax() ){
+            return $next($request);
+        }
         $token = $request->headers->get('Authorization');
         if ( empty($token) ) {
             return response()->json(['error' => 'Token 缺失'] , 401);
