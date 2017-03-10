@@ -6,6 +6,7 @@ import OrderView from './views/order/Index.vue'
 import OrderDetailView from './views/order/Detail.vue'
 import GoodsView from './views/goods/Index.vue'
 import GoodsAddView from './views/goods/add.vue'
+import GoodsEditView from './views/goods/edit.vue'
 import CompanyView from './views/company/index.vue'
 import GeneratorCreateView from './views/generator/Create.vue'
 import CategoryView from './views/category/Index.vue'
@@ -47,6 +48,10 @@ const routes = [
         path: 'goods/add',
         component: GoodsAddView,
         name: '添加商品'
+      }, {
+        path: 'goods/:id',
+        component: GoodsEditView,
+        name: '编辑商品'
       }, {
         path: 'category',
         component: CategoryView,

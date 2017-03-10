@@ -17,12 +17,13 @@ class CreateGoodsTable extends Migration
         Schema::create('goods', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->integer('category_id')->default(0)->comment('分类id');
+            $table->integer('company_id')->default(0)->comment('公司id');
             $table->string('name',100);
             $table->string('detail',300)->nullable()->comment('简介');
-            $table->integer('company_id')->default(0)->comment('公司id');
             $table->string('img',100)->nullable()->comment('图片');
             $table->text('description')->nullable()->comment('描述');
-            $table->string('erp_code')->unique()->comment('物料代码');
+            $table->string('erp_code')->comment('物料代码');
             $table->decimal('price', 10, 2)->unsigned()->nullable()->comment('内购价');
             $table->decimal('special_price',10,2)->unsigned()->nullable()->comment('特惠价');
             $table->decimal('official_price',10,2)->unsigned()->nullable()->comment('官方零售价');

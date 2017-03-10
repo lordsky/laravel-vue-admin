@@ -25,6 +25,7 @@ Route::get('/api/login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('/api/v1/login', 'Api\LoginController@login');
 
 Route::group(['prefix' => 'api/v1' , 'namespace' => 'Api' ,'middleware' => 'jwt.auth' ], function () {
+    Route::post('upload', 'UploadController@index');// 图片或文件上传
     Route::resource('goods', 'GoodsController', ['only'=>['create','store','index','show','destroy','update']]);
     Route::resource('company', 'CompanyController', ['only'=>['create','store','index','show','destroy','update']]);
     Route::post('menu/sort', 'MenuController@sort');

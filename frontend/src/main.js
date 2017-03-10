@@ -63,7 +63,6 @@ axios.interceptors.response.use(function (response) {
   } else if (status === 404) {
     errormsg = '请求资源错误'
   } else if (status === 401) {
-    window.location.href = '/'
     errormsg = '请重新登录'
   } else {
     errormsg = '服务器出现错误，请刷新页面重试'
@@ -71,6 +70,9 @@ axios.interceptors.response.use(function (response) {
   // alert('server is wrong，请刷新重试')
   if (errormsg !== '') {
     window.toastr.error(errormsg)
+  }
+  if (status === 401) {
+    window.location.href = '/'
   }
     // Do something with response error
   return Promise.reject(error)

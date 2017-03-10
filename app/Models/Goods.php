@@ -10,6 +10,7 @@ class Goods extends Model {
     public $fillable = [
         "name" ,
         "detail" ,
+        "category_id" ,
         "company_id" ,
         "img" ,
         "description" ,
@@ -25,6 +26,9 @@ class Goods extends Model {
     public static $rules = [
         "name"           => "required" ,
         "price"          => "required" ,
+        "category_id"    => 'required' ,
+        "company_id"     => 'required' ,
+        "img"            => 'required' ,
         "erp_code"       => "required|digits_between:6,8" ,
         "price"          => "required|numeric|max:10000|min:1" ,
         "official_price" => "numeric|max:10000|min:1" ,

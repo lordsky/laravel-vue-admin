@@ -29,6 +29,7 @@
                       <tr>
                         <th>id</th>
                         <th>商品名称</th>
+                        <th>商品图片</th>
                         <th>物料代码</th>
                         <th>内购价</th>
                         <th>特惠价</th>
@@ -105,6 +106,9 @@ module.exports = {
           data: 'name',
           name: 'name'
         }, {
+          data: 'img',
+          name: 'img'
+        }, {
           data: 'erp_code',
           name: 'erp_code'
         }, {
@@ -133,9 +137,14 @@ module.exports = {
             'targets': -1,
             'data': 'id',
             'render': function (data, type, full) {
-              return "<button data-toggle='tooltip' title='点击查看详情' class='btn btn-info'>查看</button>"
-              // return "<router-link :to='/setting'>查看</router-link>"
-              // return "<button class='btn btn-detail btn-info' data-id=" + data + '>编辑</button>'
+              return "<button data-toggle='tooltip' title='点击查看详情' class='btn btn-danger'>编辑</button>"
+            }
+          },
+          {
+            'targets': 2,
+            'data': 'img',
+            'render': function (data, type, full) {
+              return '<img src=' + data + ' width=140 height=100 />'
             }
           }
         ]
