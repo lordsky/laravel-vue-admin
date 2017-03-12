@@ -22,12 +22,14 @@
                     <div class="form-group">
                       <label for="">商品分类</label>
                       <select class="form-control" name='category_id'>
+                          <option value=''></option>
                           <option :value="item.id" v-for='item in categories'>{{ item.name }}</option>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="">所属公司</label>
                       <select class="form-control" name='company_id'>
+                          <option value=''></option>
                           <option :value="item.id" v-for='item in companies'>{{ item.name }}</option>
                       </select>
                     </div>
@@ -174,7 +176,8 @@ module.exports = {
             'targets': -1,
             'data': 'id',
             'render': function (data, type, full) {
-              return "<button data-toggle='tooltip' title='点击查看详情' class='btn btn-danger'>编辑</button>"
+              return "<div class=’btn-group‘><button data-toggle='tooltip' title='点击查看详情' class='btn btn-danger btn-edit'><i class='fa fa-edit'></i>编辑</button></div>" +
+              "<div class=’btn-group‘><button class='btn btn-info btn-setsequence' data-id='" + data + "'><i class='fa fa-sort'></i>上移一位</button></div>"
             }
           },
           {
@@ -194,10 +197,20 @@ module.exports = {
         ]
       })
       this.table = table
-      $('#project-table').on('click', 'button', function () {
+      $('#project-table').on('click', 'button.btn-edit', function () {
         var data = table.row($(this).parents('tr')).data()
         // self.$router.replace({ path: '/admin/order/' + data['id'] })
         self.$router.push('/admin/goods/' + data['id'])
+      })
+      self = this
+      $('#project-table').on('click', 'button.btn-setsequence', function () {
+        let id = $(this).attr('data-id')
+        self.$http.post('goods/set_sequence/' + id).then((response) => {
+          self.table.draw()
+        }).catch(error => {
+          this.formErrors = error.response.data
+          console.log('this.formErrors', this.formErrors)
+        })
       })
     })
   }

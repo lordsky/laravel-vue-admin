@@ -11,7 +11,6 @@ class GoodsSeeder extends Seeder {
      */
     public function run() {
         $faker = Faker\Factory::create(config('locate' , 'zh_CN'));
-        dd($faker->imageUrl(300,200,false,'test'));
         for ( $i = 0; $i < 33; $i++ ) {
             $randomCategory = DB::table('goods_categories')->inRandomOrder()->first();
             $randomCompany = DB::table('companies')->inRandomOrder()->first();

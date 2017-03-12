@@ -59,13 +59,14 @@ class GoodsController extends BaseApiController {
         return $this->apiReturn(false , '删除失败');
     }
 
-    public function sort(Request $request) {
-        $goodss = $request->all();
-        $index = count($goodss);
-        foreach ( $goodss as $goods ) {
-            Goods::find($goods['id'])->update(['sequence' => $index]);
-            $index--;
+    public function set_sequence($id) {
+        $goods = Goods::findOrfail($id);
+        $highGoodsSequence = Goods::where('category_id',$goods->category_id)->where('sequence','>',$goods->sequence)->min('sequence');
+        if( $highGoodsSequence > 0 ){
+            $goods->sequence = $highGoodsSequence + 1;
+            $goods->save();
+            return $this->apiReturn(true, '更新排序成功');
         }
-        return $this->apiReturn(true , '更新排序成功');
+        return $this->apiReturn(false, '更新排序失败');
     }
 }
