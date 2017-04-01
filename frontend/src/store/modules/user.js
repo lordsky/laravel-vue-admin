@@ -9,6 +9,7 @@ export default {
     [USER_SIGNIN] (state, user) {
       sessionStorage.setItem('user', JSON.stringify(user))
       console.log('user', user)
+      console.log('user', JSON.parse(sessionStorage.getItem('user')))
       Object.assign(state, user)
     },
     [USER_SIGNOUT] (state) {

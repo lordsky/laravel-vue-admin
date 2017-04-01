@@ -11,7 +11,7 @@ class CompanySeeder extends Seeder {
      */
     public function run() {
         $faker = Faker\Factory::create('zh_CN');
-        for ( $i = 0; $i < 11; $i++ ) {
+        for ( $i = 0; $i < 7; $i++ ) {
             Company::create(
                 [
                     'name'   => $faker->company ,

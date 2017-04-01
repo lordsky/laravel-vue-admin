@@ -41,7 +41,7 @@ class CompanyController extends BaseApiController {
         $company = Company::find($id);
         //判断该公司下是否有商品
         if( Goods::where('company_id',$id)->count()>0 ){
-            return $this->apiReturn(false , '删除失败，该分类下还有商品');
+            return $this->apiReturn(false , '删除失败，该子公司下还有商品');
         }
         if ( $company ) {
             $company->delete();

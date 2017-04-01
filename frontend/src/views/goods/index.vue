@@ -22,14 +22,14 @@
                     <div class="form-group">
                       <label for="">商品分类</label>
                       <select class="form-control" name='category_id'>
-                          <option value=''></option>
+                          <option value=''>请选择</option>
                           <option :value="item.id" v-for='item in categories'>{{ item.name }}</option>
                       </select>
                     </div>
                     <div class="form-group">
                       <label for="">所属公司</label>
                       <select class="form-control" name='company_id'>
-                          <option value=''></option>
+                          <option value=''>请选择</option>
                           <option :value="item.id" v-for='item in companies'>{{ item.name }}</option>
                       </select>
                     </div>

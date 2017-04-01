@@ -7,7 +7,7 @@
         <div class="box">
           <div class="box-header">
             <h3 class="box-title">编辑商品</h3>
-            <button class='btn btn-danger btn-large pull-right' @click='deleteGoods(id)'>删除商品</button>
+            <button class='btn btn-danger btn-large pull-right' @click='deleteGoods(id)' v-show='id'>删除商品</button>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -70,8 +70,9 @@
                 <span class='error text-danger' v-show="formErrors['stock']">{{ formErrors['stock'] }}</span>
             </div>
             <div class="checkbox">
-                <label>是否上架
-                    <input type='checkbox' v-model='fillItem.online' />
+                <label>
+                    <input type='checkbox' v-model='fillItem.online'  />
+                    是否上架
                 </label>
                 <span class='help text-danger' v-show="errors.has('addForm.online')">{{ errors.first('addForm.online') }}</span>
                 <span class='error text-danger' v-show="formErrors['online']">{{ formErrors['online'] }}</span>
@@ -112,6 +113,8 @@
           var result = response.data.data
           console.log('result', result)
           this.fillItem = result
+          this.fillItem.online = !!result.online
+          console.log('this.fillItem.online', this.fillItem.online)
         })
       },
       loadCategoryData () {
@@ -176,9 +179,9 @@
       }
     },
     mounted () {
+      // window.setICheck()
       this.loadCategoryData()
       this.loadCompanyData()
-      window.setICheck()
     }
   }
 </script>

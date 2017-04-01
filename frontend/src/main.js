@@ -109,7 +109,7 @@ var router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // window.console.log('Transition', transition)
-  console.log('store.user', store.state.user)
+  console.log('router store.user', store.state.user)
   var isLogin = Boolean(store.state.user.token)
   if (!isLogin && to.path !== '/login') {
     window.console.log('Not authenticated')

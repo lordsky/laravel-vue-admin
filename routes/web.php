@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::get('/t', 'TestController@index');
 
 
 Route::get('/api/login', 'Auth\LoginController@showLoginForm')->name('login');

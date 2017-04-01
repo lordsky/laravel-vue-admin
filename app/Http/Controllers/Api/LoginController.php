@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -16,6 +15,6 @@ class LoginController extends BaseApiController {
         if (!$token = JWTAuth::attempt($input)) {
             return response()->json(['result' => '邮箱或密码错误.']);
         }
-        return response()->json(['token' => $token ]);
+        return response()->json(['token' => $token, 'user'=> JWTAuth::toUser($token)  ]);
     }
 }

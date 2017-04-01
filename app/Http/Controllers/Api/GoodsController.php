@@ -13,7 +13,7 @@ class GoodsController extends BaseApiController {
             ->leftJoin('goods_categories','goods.category_id','goods_categories.id')
             ->leftJoin('companies','goods.company_id','companies.id');
         if( $request->has('name') ){
-            $queryBuilder = $queryBuilder->where('goods.name',$request->input('name'));
+            $queryBuilder = $queryBuilder->where('goods.name','like','%'.$request->input('name').'%');
         }
         if( $request->has('category_id') ){
             $queryBuilder = $queryBuilder->where('goods.category_id',$request->input('category_id'));
